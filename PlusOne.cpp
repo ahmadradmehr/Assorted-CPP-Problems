@@ -17,20 +17,40 @@
  * Explanation: The array represents the integer 4321.
  */
  
+//class PlusOne {
+//public:
+//    vector<int> plusOne(vector<int>& digits) {
+//        bool done = false;
+//        int i = digits.size()-1;
+//        while (!done) {
+//            if (i < 0) {
+//                std::reverse(digits.begin(), digits.end());
+//                digits.push_back(1);
+//                std::reverse(digits.begin(), digits.end());
+//                done = true;
+//            } else if (digits.at(i) != 9) {
+//                digits.at(i)++;
+//                done = true;
+//            } else {
+//                digits.at(i) = 0;
+//                i--;
+//            }
+//        }
+//        return digits;
+//    }
+//};
+
 class PlusOne {
 public:
     vector<int> plusOne(vector<int>& digits) {
-        bool done = false;
         int i = digits.size()-1;
-        while (!done) {
+        while (true) {
             if (i < 0) {
-                std::reverse(digits.begin(), digits.end());
-                digits.push_back(1);
-                std::reverse(digits.begin(), digits.end());
-                done = true;
+                digits.insert(digits.begin(), 1);
+                break;
             } else if (digits.at(i) != 9) {
                 digits.at(i)++;
-                done = true;
+                break;
             } else {
                 digits.at(i) = 0;
                 i--;
