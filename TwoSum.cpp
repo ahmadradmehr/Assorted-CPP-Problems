@@ -10,23 +10,37 @@
 class TwoSum {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        int rem {0};
-        bool done {false};
-        int t {0};
-        vector<int> indices {0, 0};
-        while (!done) {
-            t = target;
-            for (int i {0}; i < nums.size(); i++) {
-                rem = t - nums[i];
-                for (int j {i+1}; j < nums.size(); j++) {
-                    if (nums[j] == rem) {
-                        done = true;
-                        indices.at(0) = i;
-                        indices.at(1) = j;
-                    }
-                }
-            }
+        unordered_map<int, int> memory;
+        for (int i {0}; i < nums.size(); i++) {
+            int t = target - nums.at(i);
+            if (memory.count(t))
+                return {memory[t], i};
+            memory[nums.at(i)] = i;
         }
-        return indices;
+        return {-1, -1};
     }
 };
+
+//class TwoSum {
+//public:
+//    vector<int> twoSum(vector<int>& nums, int target) {
+//        int rem {0};
+//        bool done {false};
+//        int t {0};
+//        vector<int> indices {0, 0};
+//        while (!done) {
+//            t = target;
+//            for (int i {0}; i < nums.size(); i++) {
+//                rem = t - nums[i];
+//                for (int j {i+1}; j < nums.size(); j++) {
+//                    if (nums[j] == rem) {
+//                        done = true;
+//                        indices.at(0) = i;
+//                        indices.at(1) = j;
+//                    }
+//                }
+//            }
+//        }
+//        return indices;
+//    }
+//};
