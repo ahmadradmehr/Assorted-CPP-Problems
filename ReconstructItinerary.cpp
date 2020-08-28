@@ -24,21 +24,21 @@
 class ReconstructItinerary {
 public:
     vector<string> findItinerary(vector<vector<string>>& tickets) {
-        if (tickets.empty())
-            return {};
-        unordered_map<string, multiset<string>> m;
-        for (auto &v: tickets) {
-            m[v.front()].insert(v.back());
+        unordered_map<string, multiset<string>> trip;
+        vector<string> route;
+        for (auto &v: tickets)
+            trip[v.front()].insert(v.back());
+        visit("JFK", trip, route);
+        reverse(route.begin(), route.end());
+        return route;
+    }
+    
+    void visit(string airport, unordered_map<string, multiset<string>> &trip, vector<string> &route) {
+        while (trip[airport].size()) {
+            string next = *trip[airport].begin();
+            trip[airport].erase(trip[airport].begin());
+            visit(next, trip, route);
         }
-        vector<string> itinerary {"JFK"};
-        while (m.size() > 0) {
-            string airport = itinerary.back();
-            auto it = m[airport].begin();
-            itinerary.push_back(*it);
-            m[airport].erase(it);
-            if (m[airport].empty())
-                m.erase(airport);
-        }
-        return itinerary;
+        route.push_back(airport);
     }
 };
