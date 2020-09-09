@@ -1,74 +1,47 @@
-/* Longest Palindromic Substring
+/* Longest Palindrome
  * 
- * Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+ * Given a string s which consists of lowercase or uppercase letters, return the length of the longest palindrome that can be built with those letters.
+ * Letters are case sensitive, for example, "Aa" is not considered a palindrome here.
  * 
  * Example 1:
- * Input: "babad"
- * Output: "bab"
- * Note: "aba" is also a valid answer.
+ * Input: s = "abccccdd"
+ * Output: 7
+ * Explanation:
+ * One longest palindrome that can be built is "dccaccd", whose length is 7.
  * 
  * Example 2:
- * Input: "cbbd"
- * Output: "bb"
+ * Input: s = "a"
+ * Output: 1
+ * 
+ * Example 3:
+ * Input: s = "bb"
+ * Output: 2
+ * 
+ * Constraints:
+ * 1 <= s.length <= 2000
+ * s consits of lower-case and/or upper-case English letters only.
  */
 
 class LongestPalindrome {
 public:
-    string longestPalindrome(string s) {
-        string res;
-        int i {0};
-        while (i < s.length() - res.length()/2) {
-            string temp = expandPalindrome(s, i);
-            if (temp.length() > res.length())
-                res = temp;
+    int longestPalindrome(string s) {
+        unordered_map<char, int> m;
+        int len {0}, max_odd {0};
+        for (auto &c: s)
+            m[c]++;
+        for (auto &mm: m) {
+            if (mm.second % 2 == 0)
+                len += mm.second;
+            else if (mm.second > max_odd) {
+                if (max_odd == 0)
+                    len += max_odd;
+                else
+                    len += max_odd - 1;
+                max_odd = mm.second;
+            } else {
+                len += mm.second - 1;
+            }
         }
-        return res;
-    }
-    
-    string expandPalindrome(string &s, int &ind) {
-        string t {s.at(ind)};
-        int l = ind, r = ind;
-        while (r < s.length()-1 && s.at(r+1) == s.at(r)) {
-            r++;
-            t += s.at(r);
-        }
-        ind = r;
-        for(int i {1}; i <= s.length()/2; i++) {
-            if (r + i > s.length()-1 || l - i < 0)
-                break;
-            if (s.at(r+i) == s.at(l-i))
-                t = s.at(r+i) + t + s.at(r+i);
-            else
-                break;
-        }
-        ind++;
-        return t;
+        return len + max_odd;
     }
 };
-
-//class LongestPalindrome {
-//public:
-//    string longestPalindrome(string s) {
-//        string longest {""}, temp {""};
-//        bool found = false;
-//        for (int i {0}; i < s.length(); i++) {
-//            temp.clear();
-//            for (int j {i}; j < s.length(); j++) {
-//                temp += s[j];
-//                found = false;
-//                for (int k {0}; k < temp.length()/2; k++) {
-//                    if (temp[k] != temp[temp.length() - k - 1]) {
-//                        found = true;
-//                        break;
-//                    }
-//                }
-//                if (!found && temp.length() > longest.length()) {
-//                    longest = temp;
-//                }
-//            }
-//            if (longest.length() >= s.length()-i-1)
-//                break;
-//        }
-//        return longest;
-//    }
-//};
