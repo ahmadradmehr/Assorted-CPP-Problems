@@ -21,20 +21,32 @@
  * 3. 2 steps + 1 step
  */
  
-class ClimbStairs {
+// class Solution {
+// public:
+//     int climbStairs(int n) {
+//         int i {1}, sum {1};
+//         while (n >= 2*i) {
+//             double temp {1.0};
+//             int f {1};
+//             for (int j {i}; j < 2*i; j++) {
+//                 temp *= static_cast<double>(n-j)/f;
+//                 f++;
+//             }
+//             sum += temp;
+//             i++;
+//         }
+//         return sum;
+//     }
+// };
+
+// Dynamic Programming
+class Solution {
 public:
     int climbStairs(int n) {
-        int i {1}, sum {1};
-        while (n >= 2*i) {
-            double temp {1.0};
-            int f {1};
-            for (int j {i}; j < 2*i; j++) {
-                temp *= static_cast<double>(n-j)/f;
-                f++;
-            }
-            sum += temp;
-            i++;
+        vector<int> dp {1, 2};
+        for (int i {2}; i < n; i++) {
+            dp.push_back(dp[i-1] + dp[i-2]);
         }
-        return sum;
+        return dp[n-1];
     }
 };
