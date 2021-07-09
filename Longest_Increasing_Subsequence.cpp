@@ -36,43 +36,21 @@ Follow up: Can you come up with an algorithm that runs in O(n log(n)) time compl
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
-        map<int, int, greater<int>> m {{1, nums[0]}};
+        vector<int> v {nums[0]};
         for (int i {1}; i < nums.size(); i++) {
-            for (auto &mm: m) {
-                if (nums[i] > mm.second && (m.count(mm.first+1) && nums[i] < m[mm.first+1] || !m.count(mm.first+1))) {
-                    m[mm.first+1] = nums[i];
+            for (int j {0}; j < v.size(); j++) {
+                if (nums[i] > v[j] && (j != v.size()-1 && nums[i] < v[j+1])) {
+                    v[j+1] = nums[i];
                     break;
-                } else if (mm.first == 1 && nums[i] < mm.second) {
-                    m[1] = nums[i];
+                } else if (nums[i] > v[j] && (j == v.size()-1)) {
+                    v.push_back(nums[i]);
+                    break;
+                } else if (j == v.size()-1 && nums[i] < v[0]) {
+                    v[0] = nums[i];
                     break;
                 }
             }
         }
-        return m.begin()->first;
+        return v.size();
     }
 };
-
-// class Solution {
-// public:
-//     int lengthOfLIS(vector<int>& nums) {
-//         vector<pair<int, int>> v {make_pair(nums[0], 1)};
-//         for (int i {1}; i < nums.size(); i++) {
-//             for (int j {0}; j < v.size(); j++) {
-//                 if (nums[i] > v[j].first) {
-//                     int k = j;
-//                     while (k > 0 && v[k-1].second == v[j].second + 1 && nums[i] < v[k-1].first)
-//                         k--;
-//                     v.insert(v.begin() + k, make_pair(nums[i], v[j].second + 1));
-//                     break;
-//                 } else if (j == v.size() - 1) {
-//                     int k = j+1;
-//                     while (k > 0 && v[k-1].second == 1 && nums[i] < v[k-1].first)
-//                         k--;
-//                     v.insert(v.begin() + k, make_pair(nums[i], 1));
-//                     break;
-//                 }
-//             }
-//         }
-//         return v[0].second;
-//     }
-// };
